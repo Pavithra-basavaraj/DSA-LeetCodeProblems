@@ -1,0 +1,1332 @@
+1)Find middle element in a Linked List
+Problem Statement: Given the head of a linked list of integers, determine the middle node of the linked list. However, if the linked list has an even number of nodes, return the second middle node.
+a)Brute/Better solution:
+// Node class represents a node in a linked list
+class Node {
+    // Data stored in the node
+    int data; 
+     // Pointer to the next node in the list
+    Node next;     
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+public class FindMiddleOfLinkedList {
+    // Function to find the middle node of a linked list
+    static Node findMiddle(Node head) {
+        // If the list is empty or has
+        // only one element, return the head as
+        // it's the middle.
+        if (head == null || head.next == null) {
+            return head;
+        }
+        Node temp = head;
+        int count = 0;
+        // Count the number of nodes
+        // in the linked list.
+        while (temp != null) {
+            count++;
+            temp = temp.next;
+        }
+        // Calculate the position of the middle node.
+        int mid = count / 2 + 1;
+        temp = head;
+        while (temp != null) {
+            mid = mid - 1;
+            // Check if the middle
+            // position is reached.
+            if (mid == 0){
+                // break out of the loop
+                // to return temp
+                break;
+            }
+            // Move temp ahead
+            temp = temp.next;
+        }
+        // Return the middle node.
+        return temp;
+    }
+    public static void main(String[] args) {
+        // Creating a sample linked list:
+        Node head = new Node(1);
+        head.next = new Node(2);
+        head.next.next = new Node(3);
+        head.next.next.next = new Node(4);
+        head.next.next.next.next = new Node(5);
+        // Find the middle node
+        Node middleNode = findMiddle(head);
+
+        // Display the value of the middle node
+        System.out.println("The middle node value is: " + middleNode.data);
+    }
+}
+Time Complexity: O(N+N/2) The code traverses the entire linked list once and half times and then only half in the second iteration, first to count the number of nodes then then again to get to the middle node. Therefore, the time complexity is linear, O(N + N/2) ~ O(N).
+Space Complexity : O(1) There is constant space complexity because it uses a constant amount of extra space regardless of the size of the linked list. We only use a few variables to keep track of the middle position and traverse the list, and the memory required for these variables does not depend on the size of the list.
+b)Optimal Solution:
+import java.util.*;
+// Node class represents a node in a linked list
+class Node {
+    // Data stored in the node
+    int data; 
+     // Pointer to the next node in the list
+    Node next;     
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+public class FindMiddleOfLinkedList {
+    static Node findMiddle(Node head) {
+        // Initialize the slow pointer to the head.
+        Node slow = head;   
+        // Initialize the fast pointer to the head.
+        Node fast = head;   
+        // Traverse the linked list using
+        // the Tortoise and Hare algorithm.
+        while (fast != null && fast.next != null && slow != null) {
+            // Move fast two steps.
+            fast = fast.next.next;  
+            // Move slow one step.
+            slow = slow.next;        
+        }
+        // Return the slow pointer,
+        // which is now at the middle node.
+        return slow;  
+    }
+    public static void main(String[] args) {
+        // Creating a sample linked list:
+        Node head = new Node(1);
+        head.next = new Node(2);
+        head.next.next = new Node(3);
+        head.next.next.next = new Node(4);
+        head.next.next.next.next = new Node(5);
+        // Find the middle node
+        Node middleNode = findMiddle(head);
+        // Display the value of the middle node
+        System.out.println("The middle node value is: " + middleNode.data);
+    }
+}
+
+
+Complexity Analysis
+Time Complexity: O(N/2) The algorithm requires the 'fast' pointer to reach the end of the list which it does after approximately N/2 iterations (where N is the total number of nodes). Therefore, the maximum number of iterations needed to find the middle node is proportional to the number of nodes in the list, making the time complexity linear, or O(N/2) ~ O(N).
+Space Complexity : O(1) There is constant space complexity because it uses a constant amount of extra space regardless of the size of the linked list. We only use a few variables to keep track of the middle position and traverse the list, and the memory required for these variables does not depend on the size of the list.
+2)Reverse a Linked List
+a)Iterative Approach:
+CODE:
+import java.util.Stack;
+// Node class represents a
+// node in a linked list
+class Node {
+    // Data stored in the node
+    int data;      
+    // Pointer to the next
+    // node in the list
+    Node next;     
+
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+// Function to reverse a linked list
+// using the 3-pointer approach
+public class ReverseLinkedListUsingStack(Node head) {
+
+   // Initialize'temp' at
+   // head of linked list
+   Node temp = head;  
+   
+   // Initialize pointer 'prev' to NULL,
+   // representing the previous node
+   Node prev = null;  
+   
+   // Traverse the list, continue till
+   // 'temp' reaches the end (NULL)
+   while(temp != null){  
+       // Store the next node in
+       // 'front' to preserve the reference
+       Node front = temp.next;  
+       
+       // Reverse the direction of the
+       // current node's 'next' pointer
+       // to point to 'prev'
+       temp.next = prev;  
+       
+        // Move 'prev' to the current
+        // node for the next iteration
+       prev = temp;  
+       
+        // Move 'temp' to the 'front' node
+        // advancing the traversal
+       temp = front; 
+   }
+   
+   // Return the new head of
+   // the reversed linked list
+   return prev;  
+
+    }
+
+    // Function to print the linked list
+    public static void printLinkedList(Node head) {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Create a linked list with values 1, 3, 2, and 4
+        Node head = new Node(1);
+        head.next = new Node(3);
+        head.next.next = new Node(2);
+        head.next.next.next = new Node(4);
+
+        // Print the original linked list
+        System.out.print("Original Linked List: ");
+        printLinkedList(head);
+
+        // Reverse the linked list
+        head = reverseLinkedList(head);
+
+        // Print the reversed linked list
+        System.out.print("Reversed Linked List: ");
+        printLinkedList(head);
+    }
+}
+Time Complexity: O(N) The code traverses the entire linked list once, where 'n' is the number of nodes in the list. This traversal has a linear time complexity, O(n).
+Space Complexity: O(1) The code uses only a constant amount of additional space, regardless of the linked list's length. This is achieved by using three pointers (prev, temp and front) to reverse the list without any significant extra memory usage, resulting in constant space complexity, O(1).
+
+
+b) Recursive Approach 
+import java.util.Stack;
+// Node class represents a
+// node in a linked list
+class Node {
+    // Data stored in the node
+    int data;      
+    // Pointer to the next
+    // node in the list
+    Node next;     
+
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+public class ReverseLinkedListUsingStack {
+
+    // Function to reverse a singly
+    // linked list using a recursion
+    public static Node reverseLinkedList(Node head) {
+        // Base case:
+        // If the linked list is empty or has only one node,
+        // return the head as it is already reversed.
+        if (head == null || head.next == null) {
+            return head;
+        }
+        
+        // Recursive step:
+        // Reverse the linked list starting
+        // from the second node (head.next).
+        Node newHead = reverseLinkedList(head.next);
+        // Save a reference to the node following
+        // the current 'head' node.
+        Node front = head.next;
+        // Make the 'front' node point to the current
+        // 'head' node in the reversed order.
+        front.next = head;
+        // Break the link from the current 'head' node
+        // to the 'front' node to avoid cycles.
+        head.next = null;
+        // Return the 'newHead,' which is the new
+        // head of the reversed linked list.
+        return newHead;
+    }
+    // Function to print the linked list
+    public static void printLinkedList(Node head) {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Create a linked list with values 1, 3, 2, and 4
+        Node head = new Node(1);
+        head.next = new Node(3);
+        head.next.next = new Node(2);
+        head.next.next.next = new Node(4);
+
+        // Print the original linked list
+        System.out.print("Original Linked List: ");
+        printLinkedList(head);
+
+        // Reverse the linked list
+        head = reverseLinkedList(head);
+
+        // Print the reversed linked list
+        System.out.print("Reversed Linked List: ");
+        printLinkedList(head);
+    }
+}
+Time Complexity: O(N) This is because we traverse the linked list twice: once to push the values onto the stack, and once to pop the values and update the linked list. Both traversals take O(N) time.
+Space Complexity : O(1) No additional space is used explicitly for data structures or allocations during the linked list reversal process. However, it's important to note that there is an implicit use of stack space due to recursion. This recursive stack space stores function calls and associated variables during the recursive traversal and reversal of the linked list. Despite this, no extra memory beyond the program's existing execution space is allocated, hence maintaining a space complexity of O(1).
+3)Detect a Cycle in a Linked List
+a)BruteForce Solution:
+Code:
+import java.util.*;
+// Node class represents a
+// node in a linked list
+class Node {
+    // Data stored in the node
+    int data;
+
+    // Pointer to the next node in the list
+    Node next;
+    // Constructor with both data 
+    // and next node as parameters
+    Node(int data1, Node next1) {
+        data = data1;
+        next = next1;
+    }
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data1) {
+        data = data1;
+        next = null;
+    }
+}
+// Solution class with detectLoop function
+class Solution {
+    // function to detect loop in linked list
+    public boolean detectLoop(Node head) {
+        // Initialize a pointer 'temp'
+        // at the head of the linked list
+        Node temp = head;
+        // Create a map to keep track of
+        // encountered nodes
+        HashMap<Node, Integer> nodeMap = new HashMap<>();
+        // Step 2: Traverse the linked list
+        while (temp != null) {
+            // If the node is already in the
+            // map, there is a loop
+            if (nodeMap.containsKey(temp)) {
+                return true;
+            }
+            // Store the current node
+            // in the map
+            nodeMap.put(temp, 1);
+
+            // Move to the next node
+            temp = temp.next;
+        }
+        // Step 3: If the list is successfully traversed 
+        // without a loop, return false
+        return false;
+    }
+}
+// Driver class
+public class Main {
+    public static void main(String[] args) {
+        // Create a sample linked list
+        // with a loop for testing
+        Node head = new Node(1);
+        Node second = new Node(2);
+        Node third = new Node(3);
+        Node fourth = new Node(4);
+        Node fifth = new Node(5);
+        head.next = second;
+        second.next = third;
+        third.next = fourth;
+        fourth.next = fifth;
+        // Create a loop
+        fifth.next = third;
+
+        Solution sol = new Solution();
+        // Check if there is a loop 
+        // in the linked list
+        if (sol.detectLoop(head)) {
+            System.out.println("Loop detected in the linked list.");
+        } else {
+            System.out.println("No loop detected in the linked list.");
+        }
+    }
+}
+Time Complexity: O(N*LogN), we traverse the entire linked list once and store and retrieve nodes from the hash map. Map operations have a worst time space complexiy of O(LogN).
+Space Complexity: O(N) , additional amount of extra space is used to store nodes in a hash map.
+b)Optimal Solution:
+Code:
+import java.util.*;
+// Node class represents a
+// node in a linked list
+class Node {
+    // Data stored in the node
+    int data;
+    // Pointer to the next node in the list
+    Node next;
+    // Constructor with both data 
+    // and next node as parameters
+    Node(int data1, Node next1) {
+        data = data1;
+        next = next1;
+    }
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data1) {
+        data = data1;
+        next = null;
+    }
+}
+// Solution class with detectLoop function
+class Solution {
+    // function to detect loop in linked list
+    public boolean detectLoop(Node head) {
+        // Initialize a pointer 'temp'
+        // at the head of the linked list
+        Node temp = head;
+        // Create a map to keep track of
+        // encountered nodes
+        HashMap<Node, Integer> nodeMap = new HashMap<>();
+        // Step 2: Traverse the linked list
+        while (temp != null) {
+            // If the node is already in the
+            // map, there is a loop
+            if (nodeMap.containsKey(temp)) {
+                return true;
+            }
+            // Store the current node
+            // in the map
+            nodeMap.put(temp, 1);
+            // Move to the next node
+            temp = temp.next;
+        }
+        // Step 3: If the list is successfully traversed 
+        // without a loop, return false
+        return false;
+    }
+}
+// Driver class
+public class Main {
+    public static void main(String[] args) {
+        // Create a sample linked list
+        // with a loop for testing
+        Node head = new Node(1);
+        Node second = new Node(2);
+        Node third = new Node(3);
+        Node fourth = new Node(4);
+        Node fifth = new Node(5);
+        head.next = second;
+        second.next = third;
+        third.next = fourth;
+        fourth.next = fifth;
+        // Create a loop
+        fifth.next = third;
+        Solution sol = new Solution();
+        // Check if there is a loop 
+        // in the linked list
+        if (sol.detectLoop(head)) {
+            System.out.println("Loop detected in the linked list.");
+        } else {
+            System.out.println("No loop detected in the linked list.");
+        }
+    }
+}
+4)Starting point of loop in a Linked List(Linked List Life cycle )
+a)Brute Force Approach
+import java.util.HashMap;
+// Node class represents a
+// node in a linked list
+class Node {
+     // Data stored in the node
+    int data;  
+    // Pointer to the next node in the list
+    Node next;   
+    // Constructor with both data and
+    // next node as parameters
+    Node(int data1, Node next1) {
+        data = data1;
+        next = next1;
+    }
+    // Constructor with only data as a
+    // parameter, sets next to null
+    Node(int data1) {
+        data = data1;
+        next = null;
+    }
+}
+public class LinkedListLoopDetection {
+    // Function to detect a loop in a linked list
+    // and return the starting node of the loop
+    public static Node detectLoop(Node head) {
+        // Use temp to traverse the linked list
+        Node temp = head;
+        // HashMap to store all visited nodes
+        HashMap<Node, int> nodeMap = new HashMap<>();
+        // Traverse the list using temp
+        while (temp != null) {
+            // Check if temp has been encountered again
+            if (nodeMap.containsKey(temp)) {
+                // A loop is detected, hence return temp
+                return temp;
+            }
+
+            // Store temp as visited
+            nodeMap.put(temp, 1);
+
+            // Iterate through the list
+            temp = temp.next;
+        }
+
+        // If no loop is detected, return null
+        return null;
+    }
+
+    public static void main(String[] args) {
+        // Create a sample linked list with a loop
+        Node node1 = new Node(1);
+        Node node2 = new Node(2);
+        node1.next = node2;
+        Node node3 = new Node(3);
+        node2.next = node3;
+        Node node4 = new Node(4);
+        node3.next = node4;
+        Node node5 = new Node(5);
+        node4.next = node5;
+
+        // Make a loop from node5 to node2
+        node5.next = node2;
+
+        // Set the head of the linked list
+        Node head = node1;
+
+        // Detect the loop in the linked list
+        Node loopStartNode = detectLoop(head);
+
+        if (loopStartNode != null) {
+            System.out.println("Loop detected. Starting node of the loop is: " + loopStartNode.data);
+        } else {
+            System.out.println("No loop detected in the linked list.");
+        }
+    }
+}
+b)Optimal Approach
+import java.util.HashMap;
+// Node class represents a
+// node in a linked list
+class Node {
+    // Data stored in the node
+    int data;        
+    // Pointer to the next node in the list
+    Node next;      
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data1, Node next1) {
+        data = data1;
+        next = next1;
+    }
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data1) {
+        data = data1;
+        next = null;
+    }
+}
+public class LinkedListLoopDetection {
+    // Function to find the first node
+    // of the loop in a linked list
+    public static Node firstNode(Node head) {
+        // Initialize a slow and fast 
+        // pointers to the head of the list
+        Node slow = head;  
+        Node fast = head;  
+        // Phase 1: Detect the loop
+        while (fast != null && fast.next != null) {
+            // Move slow one step
+            slow = slow.next;        
+            // Move fast two steps
+            fast = fast.next.next;  
+    
+            // If slow and fast meet,
+            // a loop is detected
+            if (slow == fast) {
+                // Reset the slow pointer
+                // to the head of the list
+                slow = head; 
+                // Phase 2: Find the first node of the loop
+                while (slow != fast) {
+                    // Move slow and fast one step
+                    // at a time
+                    slow = slow.next;  
+                    fast = fast.next;    
+                    // When slow and fast meet again,
+                    // it's the first node of the loop
+                }
+                // Return the first node of the loop
+                return slow;  
+            }
+        }
+        // If no loop is found, return null
+        return null; 
+    }
+    public static void main(String[] args) {
+        // Create a sample linked list with a loop
+        Node node1 = new Node(1);
+        Node node2 = new Node(2);
+        node1.next = node2;
+        Node node3 = new Node(3);
+        node2.next = node3;
+        Node node4 = new Node(4);
+        node3.next = node4;
+        Node node5 = new Node(5);
+        node4.next = node5;
+        // Make a loop from node5 to node2
+        node5.next = node2;
+        // Set the head of the linked list
+        Node head = node1;
+        // Detect the loop in the linked list
+        Node loopStartNode = firstNode(head);
+        if (loopStartNode != null) {
+            System.out.println("Loop detected. Starting node of the loop is: " + loopStartNode.data);
+        } else {
+            System.out.println("No loop detected in the linked list.");
+        }
+    }
+}
+5)Check if the given Linked List is Palindrome      
+a)Brute Force Approach(Using Stack):
+import java.util.Stack;
+
+// Node class represents a
+// node in a linked list
+class Node {
+    // Data stored in the node
+    int data;      
+    // Pointer to the next
+    // node in the list
+    Node next;     
+
+    // Constructor with both data
+    // and next node as parameters
+    Node(int data, Node next) {
+        this.data = data;
+        this.next = next;
+    }
+
+    // Constructor with only data as
+    // a parameter, sets next to null
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+    public boolean isPalindrome(Node head) {
+        // Create an empty stack
+        // to store values
+        Stack<Integer> st = new Stack<>();
+    
+        // Initialize a temporary pointer
+        // to the head of the linked list
+        Node temp = head;
+    
+        // Traverse the linked list and
+        // push values onto the stack
+        while (temp != null) {
+            // Push the data from the
+            // current node onto the stack
+            st.push(temp.data);
+    
+            // Move to the next node
+            temp = temp.next;
+        }
+    
+        // Reset the temporary pointer back
+        // to the head of the linked list
+        temp = head;
+    
+        // Compare values by popping from the stack
+        // and checking against linked list nodes
+        while (temp != null) {
+            if (temp.data != st.peek()) {
+                // If values don't match,
+                // it's not a palindrome
+                return false;
+            }
+    
+            // Pop the value from the stack
+            st.pop();
+    
+            // Move to the next node
+            // in the linked list
+            temp = temp.next;
+        }
+    
+        // If all values match,
+        // it's a palindrome
+        return true;
+    }
+
+
+    // Function to print the linked list
+    public static void printLinkedList(Node head) {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Create a linked list with
+        // values 1, 5, 2, 5, and 1 (15251, a palindrome)
+        Node head = new Node(1);
+        head.next = new Node(5);
+        head.next.next = new Node(2);
+        head.next.next.next = new Node(5);
+        head.next.next.next.next = new Node(1);
+
+        // Print the original linked list
+        System.out.print("Original Linked List: ");
+        printLinkedList(head);
+
+        // Check if the linked list is a palindrome
+        if (isPalindrome(head)) {
+            System.out.println("The linked list is a palindrome.");
+        } else {
+            System.out.println("The linked list is not a palindrome.");
+        }
+    }
+}
+Time Complexity: O(2 * N) This is because we traverse the linked list twice: once to push the values onto the stack, and once to pop the values and compare with the linked list. Both traversals take O(2*N) ~ O(N) time.
+Space Complexity: O(N) We use a stack to store the values of the linked list, and in the worst case, the stack will have all N values,  ie. storing the complete linked list. 
+b)Optimal Solution:
+CODE:
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) return true;
+
+        // Step 1: Find middle
+        ListNode slow = head, fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Step 2: Reverse second half
+        ListNode secondHalf = reverse(slow.next);
+
+        // Step 3: Compare halves
+        //initialize first element to head that is firstHalf
+        //and initialize reversed second half as newHead  
+        ListNode firstHalf = head;
+        ListNode newHead = secondHalf;
+        boolean palindrome = true;
+        while (newHead != null) {
+            if (firstHalf.val != newHead.val) {
+                palindrome = false;
+                break;
+            }
+            firstHalf = firstHalf.next;
+            newHead = newHead.next;
+        }
+
+        // Step 4: Restore list
+        reverse(newHead);
+
+        return palindrome;
+    }
+
+    private ListNode reverse(ListNode head) {
+        ListNode prev = null, curr = head;
+        while (curr != null) {
+            ListNode temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev;
+    }
+}
+Complexity Analysis
+Time Complexity: O (2* N) The algorithm traverses the linked list twice, dividing it into halves. During the first traversal, it reverses one-half of the list, and during the second traversal, it compares the elements of both halves. As each traversal covers N/2 elements, the time complexity is calculated as O(N/2 + N/2 + N/2 + N/2), which simplifies to O(2N), ultimately representing O(N). 
+Space Complexity: O(1) The approach uses a constant amount of additional space regardless of the size of the input linked list. It doesn't allocate any new data structures that depend on the input size, resulting in a space complexity of O(1).
+6)Segregate even and odd nodes in LinkedList
+CODE:
+import java.util.*;
+class ListNode
+{
+    int val;
+    ListNode next;
+    ListNode(int x)
+    {
+        val = x;
+        next = null;
+    }
+}
+class TUF{
+static ListNode head, tail; // head and tail of the LinkedList
+static void PrintList(ListNode head) // Function to print the LinkedList
+{
+    ListNode curr = head;
+    for (; curr != null; curr = curr.next)
+        System.out.print(curr.val+"-->");
+    System.out.println("null");
+}
+static void InsertatLast(int value) // Function for creating a LinkedList
+{
+    ListNode newnode = new ListNode(value);
+    if (head == null)
+        {
+        head = newnode;
+        tail = newnode;
+        }
+    else
+        tail = tail.next = newnode;
+}
+static ListNode SegregatetoOddEVen()
+{
+    // creating Heads of Odd and Even LinkedLists
+    ListNode oddHead = new ListNode(-1), oddTail = oddHead;
+    ListNode evenHead = new ListNode(-1), evenTail = evenHead;
+    ListNode curr = head, temp;
+    while (curr!=null)
+    {
+        // Breaking the Link of the curr Node.
+        temp = curr;
+        curr = curr.next;
+        temp.next = null;
+
+        if (temp.val%2!=0) // If odd Node,append to odd LinkedList
+        {
+            oddTail.next = temp;
+            oddTail = temp;
+        }
+        else // If Even Node,append to even LinkedList
+        {
+            evenTail.next = temp;
+            evenTail = temp;
+        }
+    }
+    evenTail.next = oddHead.next; 
+    // Appending Odd LinkedList at end of EvenLinkedList
+    return evenHead.next;
+} 
+public static void main(String args[])
+{
+    InsertatLast(1);
+    InsertatLast(2);
+    InsertatLast(3);
+    InsertatLast(4);
+    System.out.println("Intial LinkedList : ");
+    PrintList(head);
+    ListNode newHead = SegregatetoOddEVen();
+    System.out.println("LinkedList After Segregration ");
+    PrintList(newHead);
+}
+}
+Output : 
+Initial LinkedList : 
+1→2→3→4→null
+LinkedList After Segregration
+2→4→1→3→null 
+Time Complexity: O(N) N is the number of Nodes in LinkedList. As we are traversing LinkedList once.
+Space Complexity: O(1) We are just Manipulating the Links, not using any extra space.
+
+
+7)Delete the Middle Node of LL
+CODE:
+a)BruteForce Solution:
+class Solution {
+    public ListNode deleteMiddle(ListNode head) {
+        // Edge case: list has only one node
+        if (head == null || head.next == null) {
+            return null;
+        }
+        ListNode slow = head;
+        ListNode fast = head;
+        ListNode prev = null;
+        // Move fast two steps, slow one step
+        while (fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        // slow is now at the middle, prev is before middle
+        if (prev != null) {
+            prev.next = slow.next; // safely skip middle
+        }
+        return head;
+    }}
+b)Optimal solution:
+class Solution {
+    public ListNode deleteMiddle(ListNode head) 
+    {
+        if(head== null||head.next == null)
+        {
+            return null;
+        }
+        ListNode slow=head;
+        ListNode fast=head;
+        ListNode prev=null;
+        while(fast!=null&&fast.next!=null)
+        {
+            prev=slow;
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        if (prev != null) 
+        {
+            prev.next = slow.next; // safely skip middle
+        }
+         return head;
+    }  
+}
+8)Remove N-th node from the end of a Linked List
+a)BruteForce solution:
+import java.util.*;
+
+// Class representing a node in the linked list
+class Node {
+    int data;
+    Node next;
+
+    // Constructor for Node with data and next node
+    Node(int data1, Node next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor for Node with only data (next = null)
+    Node(int data1) {
+        data = data1;
+        next = null;
+    }
+}
+
+// Class to hold the solution logic
+class Solution {
+
+    // Function to print the linked list
+    public void printLL(Node head) {
+        while (head != null) {
+            System.out.print(head.data + " ");
+            head = head.next;
+        }
+    }
+
+    // Function to delete the Nth node from the end
+    public Node deleteNthNodeFromEnd(Node head, int N) {
+        // If list is empty
+        if (head == null) {
+            return null;
+        }
+
+        int cnt = 0;
+        Node temp = head;
+
+        // Count total number of nodes
+        while (temp != null) {
+            cnt++;
+            temp = temp.next;
+        }
+
+        // If N equals total nodes → delete head
+        if (cnt == N) {
+            return head.next;
+        }
+
+        // Calculate position from start
+        int res = cnt - N;
+        temp = head;
+
+        // Traverse to the node before target
+        while (temp != null) {
+            res--;
+            if (res == 0) {
+                break;
+            }
+            temp = temp.next;
+        }
+
+        // Delete the node
+        temp.next = temp.next.next;
+
+        return head;
+    }
+}
+
+// Main class to execute the program
+public class Main {
+    public static void main(String[] args) {
+        List<Integer> arr = Arrays.asList(1, 2, 3, 4, 5);
+        int N = 3;
+
+        // Create linked list manually
+        Node head = new Node(arr.get(0));
+        head.next = new Node(arr.get(1));
+        head.next.next = new Node(arr.get(2));
+        head.next.next.next = new Node(arr.get(3));
+        head.next.next.next.next = new Node(arr.get(4));
+
+        // Create Solution object
+        Solution sol = new Solution();
+
+        // Delete the Nth node from the end
+        head = sol.deleteNthNodeFromEnd(head, N);
+
+        // Print the modified linked list
+        sol.printLL(head);
+    }
+}
+Time Complexity: O(L)+O(L-N), We are calculating the length of the linked list and then iterating up to the (L-N)th node of the linked list, where L is the total length of the list.
+Space Complexity: O(1), constant additional space is used.
+b)Optimal Solution:
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) 
+    {
+        // Create two pointers, fastp and slowp
+        ListNode fastp = head;
+        ListNode slowp = head;
+        // Move the fastp pointer N nodes ahead
+        for (int i = 0; i < n; i++)
+            fastp = fastp.next;
+        // If fastp becomes null, the Nth node from the end is the head
+        if (fastp == null)
+            return head.next;
+        // Move both pointers until fastp reaches the end
+        while (fastp.next != null) {
+            fastp = fastp.next;
+            slowp = slowp.next;
+        }
+        // Delete the Nth node from the end
+        ListNode delNode = slowp.next;
+        slowp.next = slowp.next.next;
+        delNode = null;
+        return head;
+    }
+}
+// class Solution {
+//     public ListNode removeNthFromEnd(ListNode head, int n) {
+//         ListNode res = new ListNode(0, head);
+//         ListNode dummy = res;
+
+//         for (int i = 0; i < n; i++) {
+//             head = head.next;
+//         }
+
+//         while (head != null) {
+//             head = head.next;
+//             dummy = dummy.next;
+//         }
+
+//         dummy.next = dummy.next.next;
+
+//         return res.next;        
+//     }
+// }
+Time Complexity: O(N), since the fast pointer will traverse the entire linked list, where N is the length of the linked list.
+Space Complexity: O(1), constant additional space is used to check unique elements.
+9)Sort a Linked List
+CODE:
+import java.util.*;
+
+// Node class represents a linked list node
+class Node {
+    // Data stored in the node
+    int data;
+
+    // Pointer to the next node
+    Node next;
+
+    // Constructor with data and next pointer
+    Node(int data1, Node next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor with only data
+    Node(int data1) {
+        data = data1;
+        next = null;
+    }
+}
+
+// Solution class to hold sorting function
+class Solution {
+    // Function to sort the linked list
+    public Node sortLL(Node head) {
+        // List to store node values
+        ArrayList<Integer> arr = new ArrayList<>();
+
+        // Pointer to traverse the list
+        Node temp = head;
+
+        // Traverse and push values into list
+        while (temp != null) {
+            arr.add(temp.data);
+            temp = temp.next;
+        }
+
+        // Sort the list
+        Collections.sort(arr);
+
+        // Reassign sorted values to list nodes
+        temp = head;
+        for (int i = 0; i < arr.size(); i++) {
+            temp.data = arr.get(i);
+            temp = temp.next;
+        }
+
+        // Return head of sorted list
+        return head;
+    }
+}
+
+// Main class to run the program
+public class Main {
+    // Function to print linked list
+    static void printLinkedList(Node head) {
+        // Pointer to traverse list
+        Node temp = head;
+
+        // Traverse and print values
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        // Create linked list: 3 -> 2 -> 5 -> 4 -> 1
+        Node head = new Node(3);
+        head.next = new Node(2);
+        head.next.next = new Node(5);
+        head.next.next.next = new Node(4);
+        head.next.next.next.next = new Node(1);
+
+        // Print original list
+        System.out.print("Original Linked List: ");
+        printLinkedList(head);
+
+        // Create Solution object
+        Solution obj = new Solution();
+
+        // Sort the linked list
+        head = obj.sortLL(head);
+
+        // Print sorted list
+        System.out.print("Sorted Linked List: ");
+        printLinkedList(head);
+    }
+}
+b)Optimal Solution: (Using Merge Sort)
+import java.util.*;
+
+// Node class represents a linked list node
+class Node {
+    // Data stored in the node
+    int data;
+
+    // Pointer to the next node
+    Node next;
+
+    // Constructor with data and next pointer
+    Node(int data1, Node next1) {
+        data = data1;
+        next = next1;
+    }
+
+    // Constructor with only data
+    Node(int data1) {
+        data = data1;
+        next = null;
+    }
+}
+
+// Solution class contains merge sort logic
+class Solution {
+    // Function to merge two sorted linked lists
+    public Node mergeTwoSortedLinkedLists(Node list1, Node list2) {
+        // Create a dummy node
+        Node dummyNode = new Node(-1, null);
+
+        // Temp pointer to build merged list
+        Node temp = dummyNode;
+
+        // Traverse both lists
+        while (list1 != null && list2 != null) {
+            // Choose smaller node
+            if (list1.data <= list2.data) {
+                temp.next = list1;
+                list1 = list1.next;
+            } else {
+                temp.next = list2;
+                list2 = list2.next;
+            }
+            // Move temp pointer
+            temp = temp.next;
+        }
+
+        // Attach remaining nodes
+        if (list1 != null) {
+            temp.next = list1;
+        } else {
+            temp.next = list2;
+        }
+        // Return head of merged list
+        return dummyNode.next;
+    }
+    // Function to find middle of linked list
+    public Node findMiddle(Node head) {
+        // If list empty or single node
+        if (head == null || head.next == null) {
+            return head;
+        }
+        // Slow and fast pointers
+        Node slow = head;
+        Node fast = head.next;
+        // Move fast twice as fast as slow
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        // Return middle node
+        return slow;}
+    // Function to perform merge sort
+    public Node sortLL(Node head) {
+        // Base case: empty or single node
+        if (head == null || head.next == null) {
+            return head;
+        }
+        // Find middle node
+        Node middle = findMiddle(head);
+
+        // Split into two halves
+        Node right = middle.next;
+        middle.next = null;
+        Node left = head;
+        // Recursively sort both halves
+        left = sortLL(left);
+        right = sortLL(right);
+        // Merge sorted halves
+        return mergeTwoSortedLinkedLists(left, right);
+    }
+}
+// Main class to run the program
+public class Main {
+    // Function to print linked list
+    static void printLinkedList(Node head) {
+        // Temp pointer to traverse
+        Node temp = head;
+        // Traverse and print nodes
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+    public static void main(String[] args) {
+        // Create linked list: 3 -> 2 -> 5 -> 4 -> 1
+        Node head = new Node(3, null);
+        head.next = new Node(2, null);
+        head.next.next = new Node(5, null);
+        head.next.next.next = new Node(4, null);
+        head.next.next.next.next = new Node(1, null);
+        // Print original list
+        System.out.print("Original Linked List: ");
+        printLinkedList(head);
+        // Create Solution object
+        Solution obj = new Solution();
+        // Sort the linked list
+        head = obj.sortLL(head);
+        // Print sorted list
+        System.out.print("Sorted Linked List: ");
+        printLinkedList(head);
+    }
+}
+10)Add two numbers represented as Linked Lists
+CODE:
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(); 
+        ListNode temp = dummy; 
+        int carry = 0;
+        while( l1 != null || l2 != null || carry == 1) {
+            int sum = 0; 
+            if(l1 != null) {
+                sum += l1.val; 
+                l1 = l1.next; 
+            }
+            
+            if(l2 != null) {
+                sum += l2.val; 
+                l2 = l2.next; 
+            }
+            
+            sum += carry; 
+            carry = sum / 10; 
+            ListNode node = new ListNode(sum % 10); 
+            temp.next = node; 
+            temp = temp.next; 
+        }
+        return dummy.next;
+    }
+}
+Time Complexity: O(max(m,n)). Assume that m and n represent the length of l1 and l2 respectively, the algorithm above iterates at most max(m,n) times.
+Space Complexity: O(max(m,n)). The length of the new list is at most max(m,n)+1.
+
+
+
